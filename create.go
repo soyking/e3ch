@@ -1,7 +1,7 @@
 package client
 
 func (clt *EtcdHRCHYClient) CreateDir(key string) error {
-	return clt.Put(key, clt.dirValue)
+	return clt.Create(key, clt.dirValue)
 }
 
 // set kv or directory
