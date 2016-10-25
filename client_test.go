@@ -8,7 +8,7 @@ import (
 
 const (
 	TEST_ETCD_ADDR = "127.0.0.1:2379"
-	TEST_ROOT_KEY  = "e3w_test"
+	TEST_ROOT_KEY  = "e3ch_test"
 )
 
 func Test(t *testing.T) { TestingT(t) }
@@ -25,6 +25,11 @@ func init() {
 
 	client, err = New(clt, TEST_ROOT_KEY)
 	if err != nil {
+		panic(err)
+	}
+
+	err = client.FormatRootKey()
+	if err!=nil{
 		panic(err)
 	}
 

@@ -5,12 +5,20 @@ import (
 	. "gopkg.in/check.v1"
 )
 
-const TEST_PUT_KEY = "/put_dir"
+const (
+	TEST_PUT_KEY    = "/put_dir"
+	TEST_PUT_SUBKEY = "/key"
+)
 
 type PutSuite struct{}
 
 func (s *PutSuite) SetUpTest(c *C) {
 	_, err := client.client.Put(client.ctx, TEST_ROOT_KEY+TEST_PUT_KEY, client.dirValue)
+	if err != nil {
+		c.Error(err)
+	}
+
+	_, err = client.client.Put(client.ctx, TEST_ROOT_KEY+TEST_PUT_KEY+TEST_PUT_SUBKEY, "")
 	if err != nil {
 		c.Error(err)
 	}
@@ -31,16 +39,16 @@ func (s *PutSuite) TestPut1(c *C) {
 
 	// parentKey is not a directory
 	c.Assert(
-		client.Put(TEST_PUT_KEY+"/def", ""),
+		client.Put(TEST_PUT_KEY+TEST_PUT_SUBKEY+"/def", ""),
 		Equals,
 		ErrorPutKey,
 	)
 }
 
 func (s *PutSuite) TestPut2(c *C) {
-	// key has been set
+	// key has not been set
 	c.Assert(
-		client.Put(TEST_PUT_KEY, ""),
+		client.Put(TEST_PUT_KEY+"/def", ""),
 		Equals,
 		ErrorPutKey,
 	)
@@ -49,7 +57,7 @@ func (s *PutSuite) TestPut2(c *C) {
 func (s *PutSuite) TestPut3(c *C) {
 	// success
 	c.Assert(
-		client.Put(TEST_PUT_KEY+"/def", ""),
+		client.Put(TEST_PUT_KEY+TEST_PUT_SUBKEY, ""),
 		Equals,
 		nil,
 	)
