@@ -7,10 +7,6 @@ const (
 	COMPARE_EQUAL  = "="
 )
 
-func (clt *EtcdHRCHYClient) PutDir(key string) error {
-	return clt.Put(key, clt.dirValue)
-}
-
 // set kv or directory
 func (clt *EtcdHRCHYClient) Put(key, value string) error {
 	success, err := clt.put(key, value, COMPARE_BIGGER)
