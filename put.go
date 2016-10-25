@@ -2,15 +2,34 @@ package client
 
 import "github.com/coreos/etcd/clientv3"
 
+const (
+	COMPARE_BIGGER = ">"
+	COMPARE_EQUAL  = "="
+)
+
 func (clt *EtcdHRCHYClient) PutDir(key string) error {
 	return clt.Put(key, clt.dirValue)
 }
 
 // set kv or directory
-func (clt *EtcdHRCHYClient) Put(key string, value string) error {
-	key, parentKey, err := clt.ensureKey(key)
+func (clt *EtcdHRCHYClient) Put(key, value string) error {
+	success, err := clt.put(key, value, COMPARE_BIGGER)
 	if err != nil {
 		return err
+	}
+
+	if !success {
+		return ErrorPutKey
+	}
+
+	return nil
+}
+
+// with cond to confirm key has or has not been set, return (isTxnSuccess, error)
+func (clt *EtcdHRCHYClient) put(key string, value, cond string) (bool, error) {
+	key, parentKey, err := clt.ensureKey(key)
+	if err != nil {
+		return false, err
 	}
 
 	txn := clt.client.Txn(clt.ctx)
@@ -23,7 +42,7 @@ func (clt *EtcdHRCHYClient) Put(key string, value string) error {
 		),
 		clientv3.Compare(
 			clientv3.Version(key),
-			">",
+			cond,
 			0,
 		),
 	).Then(
@@ -32,12 +51,8 @@ func (clt *EtcdHRCHYClient) Put(key string, value string) error {
 
 	txnResp, err := txn.Commit()
 	if err != nil {
-		return err
+		return false, err
 	}
 
-	if !txnResp.Succeeded {
-		return ErrorPutKey
-	}
-
-	return nil
+	return txnResp.Succeeded, nil
 }

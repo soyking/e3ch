@@ -29,7 +29,7 @@ func init() {
 	}
 
 	err = client.FormatRootKey()
-	if err!=nil{
+	if err != nil {
 		panic(err)
 	}
 
@@ -38,6 +38,7 @@ func init() {
 	Suite(&GetSuite{})
 	Suite(&ListSuite{})
 	Suite(&DeleteSuite{})
+	Suite(&CreateSuite{})
 }
 
 type ClientSuite struct{}

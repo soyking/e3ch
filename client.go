@@ -16,6 +16,7 @@ var (
 	ErrorInvalidRootKey = errors.New("root key should not be empty or end with /")
 	ErrorInvalidKey     = errors.New("key should start with /")
 	ErrorPutKey         = errors.New("key is not under a directory or has not been created")
+	ErrorCreateKey      = errors.New("key is not under a directory or has been created")
 	ErrorKeyNotFound    = errors.New("key has not been set")
 	ErrorListKey        = errors.New("can only list a directory")
 )
