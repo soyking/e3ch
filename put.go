@@ -9,37 +9,42 @@ const (
 
 // set kv or directory
 func (clt *EtcdHRCHYClient) Put(key, value string) error {
-	success, err := clt.put(key, value, COMPARE_BIGGER)
+	return clt.put(key, value, false)
+}
+
+// mustEmpty to confirm the key has not been set
+func (clt *EtcdHRCHYClient) put(key string, value string, mustEmpty bool) error {
+	key, parentKey, err := clt.ensureKey(key)
 	if err != nil {
 		return err
 	}
 
-	if !success {
-		return ErrorPutKey
+	// check the key-value to ensure it's not empty or not dir
+	// it is not safe but etcd v3 doesn't support != in compare
+	// and conditions in if can only be combined by &&
+	resp, err := clt.client.Get(clt.ctx, key)
+	if err != nil {
+		return err
 	}
 
-	return nil
-}
+	if len(resp.Kvs) > 0 {
+		if mustEmpty {
+			return ErrorKeyExist
+		}
 
-// with cond to confirm key has or has not been set, return (isTxnSuccess, error)
-func (clt *EtcdHRCHYClient) put(key string, value, cond string) (bool, error) {
-	key, parentKey, err := clt.ensureKey(key)
-	if err != nil {
-		return false, err
+		kv := resp.Kvs[0]
+		if string(kv.Value) == clt.dirValue {
+			return ErrorPutDir
+		}
 	}
 
 	txn := clt.client.Txn(clt.ctx)
-	// make sure the parentKey is a directory and key has been created
+	// make sure the parentKey is a directory
 	txn.If(
 		clientv3.Compare(
 			clientv3.Value(parentKey),
 			"=",
 			clt.dirValue,
-		),
-		clientv3.Compare(
-			clientv3.Version(key),
-			cond,
-			0,
 		),
 	).Then(
 		clientv3.OpPut(key, value),
@@ -47,8 +52,11 @@ func (clt *EtcdHRCHYClient) put(key string, value, cond string) (bool, error) {
 
 	txnResp, err := txn.Commit()
 	if err != nil {
-		return false, err
+		return err
 	}
 
-	return txnResp.Succeeded, nil
+	if !txnResp.Succeeded {
+		return ErrorKeyParent
+	}
+	return nil
 }

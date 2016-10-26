@@ -6,14 +6,5 @@ func (clt *EtcdHRCHYClient) CreateDir(key string) error {
 
 // set kv or directory
 func (clt *EtcdHRCHYClient) Create(key string, value string) error {
-	success, err := clt.put(key, value, COMPARE_EQUAL)
-	if err != nil {
-		return err
-	}
-
-	if !success {
-		return ErrorCreateKey
-	}
-
-	return nil
+	return clt.put(key, value, true)
 }

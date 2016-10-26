@@ -9,16 +9,17 @@ import (
 )
 
 const (
-	DEFAULT_DIR_KEY = "etcdv3_dir_$2H#%gRe3*t"
+	DEFAULT_DIR_VALUE = "etcdv3_dir_$2H#%gRe3*t"
 )
 
 var (
 	ErrorInvalidRootKey = errors.New("root key should not be empty or end with /")
 	ErrorInvalidKey     = errors.New("key should start with /")
-	ErrorPutKey         = errors.New("key is not under a directory or has not been created")
-	ErrorCreateKey      = errors.New("key is not under a directory or has been created")
+	ErrorKeyParent      = errors.New("key is not under a directory ")
 	ErrorKeyNotFound    = errors.New("key has not been set")
+	ErrorKeyExist       = errors.New("key has been set")
 	ErrorListKey        = errors.New("can only list a directory")
+	ErrorPutDir         = errors.New("can't put a directory")
 )
 
 // etcd v3 client with Hierarchy
@@ -36,7 +37,7 @@ func New(clt *clientv3.Client, rootKey string, dirValue ...string) (*EtcdHRCHYCl
 		return nil, ErrorInvalidRootKey
 	}
 
-	d := DEFAULT_DIR_KEY
+	d := DEFAULT_DIR_VALUE
 	if len(dirValue) > 0 {
 		d = dirValue[0]
 	}

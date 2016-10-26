@@ -19,26 +19,30 @@ func (s *PutSuite) TearDownTest(c *C) {
 }
 
 func (s *PutSuite) TestPut1(c *C) {
-	// not a dir
+	_, err := client.client.Put(client.ctx, TEST_ROOT_KEY+TEST_PUT_KEY, client.dirValue)
+	if err != nil {
+		c.Error(err)
+	}
+
+	// key is directory
+	c.Assert(
+		client.Put(TEST_PUT_KEY, ""),
+		Equals,
+		ErrorPutDir,
+	)
+}
+
+func (s *PutSuite) TestPut2(c *C) {
 	_, err := client.client.Put(client.ctx, TEST_ROOT_KEY+TEST_PUT_KEY, "")
 	if err != nil {
 		c.Error(err)
 	}
 
-	// parentKey is not a directory
+	// parentKey is directory
 	c.Assert(
-		client.Put(TEST_PUT_KEY+"/def", ""),
+		client.Put(TEST_PUT_KEY+"/abc", ""),
 		Equals,
-		ErrorPutKey,
-	)
-}
-
-func (s *PutSuite) TestPut2(c *C) {
-	// key has not been set
-	c.Assert(
-		client.Put(TEST_PUT_KEY, ""),
-		Equals,
-		ErrorPutKey,
+		ErrorKeyParent,
 	)
 }
 

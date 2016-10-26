@@ -19,17 +19,16 @@ func (s *CreateSuite) TearDownTest(c *C) {
 }
 
 func (s *CreateSuite) TestCreate1(c *C) {
-	// not a dir
 	_, err := client.client.Put(client.ctx, TEST_ROOT_KEY+TEST_CREATE_KEY, "")
 	if err != nil {
 		c.Error(err)
 	}
 
-	// parentKey is not a directory
+	// key has existed
 	c.Assert(
-		client.Create(TEST_CREATE_KEY+"/def", ""),
+		client.Create(TEST_CREATE_KEY, ""),
 		Equals,
-		ErrorCreateKey,
+		ErrorKeyExist,
 	)
 }
 
@@ -39,11 +38,11 @@ func (s *CreateSuite) TestCreate2(c *C) {
 		c.Error(err)
 	}
 
-	// key has been set
+	// parentKey is directory
 	c.Assert(
-		client.Create(TEST_CREATE_KEY, ""),
+		client.Create(TEST_CREATE_KEY+"/abc", ""),
 		Equals,
-		ErrorCreateKey,
+		ErrorKeyParent,
 	)
 }
 
