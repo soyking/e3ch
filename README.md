@@ -3,7 +3,7 @@ e3ch
 
 etcd v3 client with hierarchy
 
-There are directory and key-value in etcd v2, which is convenient to manage the key-value store. But etcd v3 only support flat key-value space (see [#633](https://github.com/coreos/etcd/issues/633#issuecomment-152768632)).Though you could use `prefix` to adjust the new API, it is not easy to manage key-value store or make the structure clearly. e3ch is built for making etcd v3 'look like' a key-value store supporting hierarchy.
+There are directory and key-value in etcd v2, which is convenient to manage the key-value store. But etcd v3 only supports flat key-value space (see [#633](https://github.com/coreos/etcd/issues/633#issuecomment-152768632)).Though you could use `prefix` to adjust the new API, it is not easy to manage key-value store or make the structure clearly. e3ch is built for making etcd v3 'look like' a key-value store supporting hierarchy.
 
 ## Design
 
@@ -11,7 +11,7 @@ e3ch will set a special value for a directory, which can be defined by user. For
 
 When creating/putting key-value, e3ch will confirm the parent key should be the directory special value. For example, when putting `/database/fake-mysql/setting.json`, if the value of `/database/fake-mysql` is not the special value, the action will be rejected.
 
-When list/delete a directory, e3ch will get key-value with the prefix. For example, when listing `/database`, e3ch will get all key-value with prefix `/database/`. But it will only return the keys under the directory, and the keys in deeper directory will be ignored. So it may cost too long if there are too many keys under the directory, escpecially when listing the root `/`
+When listing/deleting a directory, e3ch will get key-value with the prefix. For example, when listing `/database`, e3ch will get all key-value with prefix `/database/`. But it will only return the keys under the directory, and the keys in deeper directory will be ignored. So it may cost too long if there are too many keys under the directory, escpecially when listing the root `/`
 
 ## Example
 
