@@ -50,6 +50,28 @@ func New(clt *clientv3.Client, rootKey string, dirValue ...string) (*EtcdHRCHYCl
 	}, nil
 }
 
+func (clt *EtcdHRCHYClient) EtcdClient() *clientv3.Client {
+	return clt.client
+}
+
+func (clt *EtcdHRCHYClient) RootKey() string {
+	return clt.rootKey
+}
+
+func (clt *EtcdHRCHYClient) DirValue() string {
+	return clt.dirValue
+}
+
+// clone client with new etcdClt, for changing some config of etcdClt
+func (clt *EtcdHRCHYClient) Clone(etcdClt *clientv3.Client) *EtcdHRCHYClient {
+	return &EtcdHRCHYClient{
+		client:   etcdClt,
+		rootKey:  clt.rootKey,
+		dirValue: clt.dirValue,
+		ctx:      context.TODO(),
+	}
+}
+
 // make sure the rootKey is a directory
 func (clt *EtcdHRCHYClient) FormatRootKey() error {
 	_, err := clt.client.Put(clt.ctx, clt.rootKey, clt.dirValue)
