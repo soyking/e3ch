@@ -39,6 +39,7 @@ func init() {
 	Suite(&ListSuite{})
 	Suite(&DeleteSuite{})
 	Suite(&CreateSuite{})
+	Suite(&AuthSuite{})
 }
 
 type ClientSuite struct{}
