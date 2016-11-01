@@ -22,7 +22,7 @@ func (clt *EtcdHRCHYClient) ensureKey(key string) (string, string, error) {
 	if isRoot(key) {
 		return clt.rootKey, clt.rootKey, nil
 	} else {
-		realKey := clt.rootKey + path.Clean(key)
+		realKey := clt.rootKey + key
 		return realKey, path.Clean(realKey + "/../"), nil
 	}
 }
