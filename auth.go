@@ -11,9 +11,12 @@ func (clt *EtcdHRCHYClient) RoleGrantPermission(name string, key, rangeEnd strin
 		return err
 	}
 
-	rangeEnd, _, err = clt.ensureKey(rangeEnd)
-	if err != nil {
-		return err
+	// rangeEnd == "" means only set key
+	if rangeEnd != "" {
+		rangeEnd, _, err = clt.ensureKey(rangeEnd)
+		if err != nil {
+			return err
+		}
 	}
 
 	_, err = clt.client.RoleGrantPermission(clt.ctx, name, key, rangeEnd, ty)
