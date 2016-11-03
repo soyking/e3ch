@@ -3,17 +3,25 @@ package client
 import (
 	"github.com/coreos/etcd/auth/authpb"
 	"github.com/coreos/etcd/clientv3"
+	"strings"
 )
 
+func (clt *EtcdHRCHYClient) permPath(key string) (string, error) {
+	if key != "0" && !strings.HasPrefix(key, "/") {
+		return "", ErrorInvalidKey
+	}
+	return clt.rootKey + key, nil
+}
+
 func (clt *EtcdHRCHYClient) RoleGrantPermission(name string, key, rangeEnd string, ty clientv3.PermissionType) error {
-	key, _, err := clt.ensureKey(key)
+	key, err := clt.permPath(key)
 	if err != nil {
 		return err
 	}
 
 	// rangeEnd == "" means only set key
 	if rangeEnd != "" {
-		rangeEnd, _, err = clt.ensureKey(rangeEnd)
+		rangeEnd, err = clt.permPath(rangeEnd)
 		if err != nil {
 			return err
 		}
