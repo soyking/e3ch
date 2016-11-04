@@ -38,7 +38,7 @@ func New(clt *clientv3.Client, rootKey string, dirValue ...string) (*EtcdHRCHYCl
 	}
 
 	d := DEFAULT_DIR_VALUE
-	if len(dirValue) > 0 {
+	if len(dirValue) > 0 && dirValue[0] != "" {
 		d = dirValue[0]
 	}
 
