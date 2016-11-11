@@ -28,7 +28,7 @@ func (s *CreateSuite) TestCreate1(c *C) {
 	c.Assert(
 		client.Create(TEST_CREATE_KEY, ""),
 		Equals,
-		ErrorKeyExist,
+		ErrorPutKey,
 	)
 }
 
@@ -42,7 +42,7 @@ func (s *CreateSuite) TestCreate2(c *C) {
 	c.Assert(
 		client.Create(TEST_CREATE_KEY+"/abc", ""),
 		Equals,
-		ErrorKeyParent,
+		ErrorPutKey,
 	)
 }
 

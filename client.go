@@ -15,11 +15,9 @@ const (
 var (
 	ErrorInvalidRootKey = errors.New("root key should not be empty or end with /")
 	ErrorInvalidKey     = errors.New("key should start with /")
-	ErrorKeyParent      = errors.New("key is not under a directory ")
+	ErrorPutKey         = errors.New("key is not under a directory or key is a directory or key is not empty")
 	ErrorKeyNotFound    = errors.New("key has not been set")
-	ErrorKeyExist       = errors.New("key has been set")
 	ErrorListKey        = errors.New("can only list a directory")
-	ErrorPutDir         = errors.New("can't put a directory")
 )
 
 // etcd v3 client with Hierarchy

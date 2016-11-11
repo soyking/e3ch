@@ -28,7 +28,7 @@ func (s *PutSuite) TestPut1(c *C) {
 	c.Assert(
 		client.Put(TEST_PUT_KEY, ""),
 		Equals,
-		ErrorPutDir,
+		ErrorPutKey,
 	)
 }
 
@@ -38,11 +38,11 @@ func (s *PutSuite) TestPut2(c *C) {
 		c.Error(err)
 	}
 
-	// parentKey is directory
+	// parentKey is not a directory
 	c.Assert(
 		client.Put(TEST_PUT_KEY+"/abc", ""),
 		Equals,
-		ErrorKeyParent,
+		ErrorPutKey,
 	)
 }
 
