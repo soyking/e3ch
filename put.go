@@ -4,11 +4,6 @@ import (
 	"github.com/coreos/etcd/clientv3"
 )
 
-const (
-	COMPARE_BIGGER = ">"
-	COMPARE_EQUAL  = "="
-)
-
 // set kv or directory
 func (clt *EtcdHRCHYClient) Put(key, value string) error {
 	return clt.put(key, value, false)

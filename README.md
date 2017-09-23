@@ -53,3 +53,7 @@ func main() {
 ```
 
 more examples in `*_test.go`
+
+## Run Test
+
+`go test -check.vv`

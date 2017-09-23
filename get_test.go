@@ -1,8 +1,8 @@
 package client
 
 import (
-	. "gopkg.in/check.v1"
 	"github.com/coreos/etcd/clientv3"
+	. "gopkg.in/check.v1"
 )
 
 const (
