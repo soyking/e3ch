@@ -1,9 +1,10 @@
 package client
 
 import (
+	"strings"
+
 	"github.com/coreos/etcd/auth/authpb"
 	"github.com/coreos/etcd/clientv3"
-	"strings"
 )
 
 func (clt *EtcdHRCHYClient) permPath(key string) (string, error) {
@@ -62,9 +63,11 @@ func (clt *EtcdHRCHYClient) RoleRevokePermission(name string, key, rangeEnd stri
 		return err
 	}
 
-	rangeEnd, _, err = clt.ensureKey(rangeEnd)
-	if err != nil {
-		return err
+	if rangeEnd != "" {
+		rangeEnd, _, err = clt.ensureKey(rangeEnd)
+		if err != nil {
+			return err
+		}
 	}
 
 	_, err = clt.client.RoleRevokePermission(clt.ctx, name, key, rangeEnd)
