@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github.com/coreos/etcd/clientv3"
+	"go.etcd.io/etcd/clientv3"
 	. "gopkg.in/check.v1"
 )
 
