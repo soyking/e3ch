@@ -19,7 +19,7 @@ When listing/deleting a directory, e3ch will get key-value with the prefix. For 
 package main
 
 import (
-	"github.com/coreos/etcd/clientv3"
+	"go.etcd.io/etcd/clientv3"
 	"github.com/soyking/e3ch"
 )
 

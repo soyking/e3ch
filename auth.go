@@ -3,8 +3,8 @@ package client
 import (
 	"strings"
 
-	"github.com/coreos/etcd/auth/authpb"
-	"github.com/coreos/etcd/clientv3"
+	"go.etcd.io/etcd/auth/authpb"
+	"go.etcd.io/etcd/clientv3"
 )
 
 func (clt *EtcdHRCHYClient) permPath(key string) (string, error) {
