@@ -1,6 +1,7 @@
 package client
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
@@ -24,6 +25,7 @@ func init() {
 	if addr, ok := os.LookupEnv("TEST_ETCD_ADDR"); ok {
 		TEST_ETCD_ADDR = addr
 	}
+	fmt.Printf("With etcd addr: %s\n", TEST_ETCD_ADDR)
 
 	clt, err := clientv3.New(clientv3.Config{Endpoints: []string{TEST_ETCD_ADDR}})
 	if err != nil {
