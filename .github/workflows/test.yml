@@ -1,6 +1,6 @@
 name: e3ch-test
 
-on: [push]
+on: [push, workflow_dispatch]
 
 jobs:
   test:
