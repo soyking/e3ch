@@ -1,12 +1,15 @@
 package client
 
 import (
+	"fmt"
+	"os"
+	"testing"
+
 	"go.etcd.io/etcd/clientv3"
 	. "gopkg.in/check.v1"
-	"testing"
 )
 
-const (
+var (
 	TEST_ETCD_ADDR = "127.0.0.1:2379"
 	TEST_ROOT_KEY  = "e3ch_test"
 )
@@ -18,6 +21,12 @@ var (
 )
 
 func init() {
+	// FIXME
+	if addr, ok := os.LookupEnv("TEST_ETCD_ADDR"); ok {
+		TEST_ETCD_ADDR = addr
+	}
+	fmt.Printf("With etcd addr: %s\n", TEST_ETCD_ADDR)
+
 	clt, err := clientv3.New(clientv3.Config{Endpoints: []string{TEST_ETCD_ADDR}})
 	if err != nil {
 		panic(err)
