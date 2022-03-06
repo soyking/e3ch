@@ -1,9 +1,10 @@
 package client
 
 import (
-	"go.etcd.io/etcd/clientv3"
-	. "gopkg.in/check.v1"
 	"strconv"
+
+	clientv3 "go.etcd.io/etcd/client/v3"
+	. "gopkg.in/check.v1"
 )
 
 const (

@@ -1,9 +1,10 @@
 package client
 
 import (
-	"go.etcd.io/etcd/clientv3"
-	mvccpb "go.etcd.io/etcd/mvcc/mvccpb"
 	"strings"
+
+	"go.etcd.io/etcd/api/v3/mvccpb"
+	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 // list a directory
