@@ -1,7 +1,7 @@
 package client
 
 import (
-	"go.etcd.io/etcd/clientv3"
+	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 // set kv or directory
